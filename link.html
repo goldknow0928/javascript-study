@@ -13,8 +13,8 @@
             main{width:50%;min-width:400px;margin:50px auto 0;padding:30px;border-radius:15px;background-color:#fff;box-shadow:3px 3px 10px 0 rgb(0 0 0 / 5%)}
             h2{padding-bottom:15px}
             ul{max-height:calc(100vh - 200px);overflow:auto}
-            li{list-style:none}
-            li+li{padding-top:10px}
+            li{list-style:none;padding:7px 0}
+            li:nth-child(5n){border-bottom:1px solid #ddd}
             a{color:#333;text-decoration:none}
             a:hover{background-color:#f4f4f4;transition:all .3s}
         </style>
@@ -26,7 +26,7 @@
         </main>
 
         <script>
-            const linkArr = ["color-flipper", "counter", "reviews", "navbar", "sidebar", "modal", "questions", "menu", "video", "scroll"];
+            const linkArr = ["color-flipper", "counter", "reviews", "navbar", "sidebar", "modal", "questions", "menu", "video", "scroll", "Tabs"];
             const elemUl = document.getElementById("link-area");
             let elemLi = "";
 
