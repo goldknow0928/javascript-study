@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap">
-    <style>
-    html, body{font-family: "Roboto", sans-serif;}
-    li{line-height: 1.5;}
-    a{color: #333; text-decoration: none;}
-    main{max-width: 300px; margin: 0 auto;}
-    </style>
-</head>
-<body>
-    <main>
-        <h2>List...</h2>
-        <ul>
-            <li><a href="./01-color-flipper/">01-color-flipper</a></li>
-            <li><a href="./02-counter/">02-counter</a></li>
-            <li><a href="./03-reviews">03-reviews</a></li>
-            <li><a href="./04-navbar">04-navbar</a></li>
-            <li><a href="./05-sidebar">05-sidebar</a></li>
-            <li><a href="./06-modal">06-modal</a></li>
-            <li><a href="./07-questions">07-questions</a></li>
-            <li><a href="./08-menu">08-menu</a></li>
-            
-            <!-- <li><a href="./08-menu">08-menu</a></li>
-            <li><a href="./08-menu">08-menu</a></li>
-            <li><a href="./08-menu">08-menu</a></li> -->
-        </ul>
-    </main>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Link</title>
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap" />
+        <style>
+            *{margin:0;padding:0}
+            body,html{font-family:Roboto,sans-serif}
+            body{background-color:#f0fbfd}
+            main{width:50%;min-width:400px;margin:50px auto 0;padding:30px;border-radius:15px;background-color:#fff;box-shadow:3px 3px 10px 0 rgb(0 0 0 / 5%)}
+            h2{padding-bottom:15px}
+            ul{max-height:calc(100vh - 200px);overflow:auto}
+            li{list-style:none}
+            li+li{padding-top:10px}
+            a{color:#333;text-decoration:none}
+            a:hover{background-color:#f4f4f4;transition:all .3s}
+        </style>
+    </head>
+    <body>
+        <main>
+            <h2>List</h2>
+            <ul id="link-area"></ul>
+        </main>
 
-</body>
+        <script>
+            const linkArr = ["color-flipper", "counter", "reviews", "navbar", "sidebar", "modal", "questions", "menu", "video", "scroll"];
+            const elemUl = document.getElementById("link-area");
+            let elemLi = "";
+
+            for (let i = 0; i < linkArr.length; i++) {
+                const element = linkArr[i];
+                elemLi += `<li><a href="./${i + 1}-${element}/">${i + 1}-${element}</a></li>`;
+            }
+
+            elemUl.innerHTML = elemLi;
+        </script>
+    </body>
 </html>
