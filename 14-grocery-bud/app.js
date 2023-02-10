@@ -86,7 +86,7 @@ function displayAlert(text, action) {
     }, 1000);
 }
 
-// clear item
+// clear item(전체 삭제)
 function clearItems() {
     const items = document.querySelectorAll(".grocery-item");
     if (items.length > 0) {
@@ -222,3 +222,12 @@ function createListItem(id, value) {
     //자식 추가
     list.appendChild(element);
 }
+
+/**
+ * 
+ * setAttributeNode
+- 새로운 속성 노드를 추가
+- 요소가 이미 존재의 속성이 이름을 지정하는 경우, 다음 속성을 대신 새 속성 될 것입니다. 
+- 새로운 속성이 기존의 속성을 옮겨 놓을 수있는 경우는 치환의 속성은, 그렇지 않으면 NULL을 반환, 반환됩니다.
+
+ */
