@@ -11,8 +11,7 @@ const displayProducts = () => {
     productsContainer.innerHTML = filteredProducts
         .map((product) => {
             const { id, title, image, price } = product;
-            /*html*/
-            return `<article class="product" data-id="${id}">
+            return /*html*/ `<article class="product" data-id="${id}">
                 <img src="${image}" class="product-img img" alt="" />
                 <footer>
                     <h5 class="product-name">${title}</h5>
