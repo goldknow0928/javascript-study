@@ -8,20 +8,24 @@ const cartItemsDOM = getElement(".cart-items");
 const cartTotalDOM = getElement(".cart-total");
 let cart = getStorageItem("cart");
 
+//제품을 카트에 추가
 export const addToCart = (id) => {
     let item = cart.find((cartItem) => cartItem.id === id);
 
+    //카트에 이미 해당 제품이 있는 검사하고, 
     if (!item) {
         let product = findProduct(id);
 
-        //항목 추가
+        //없으면 product 객체에 수량을 1로 설정하여 카트에 추가
         product = { ...product, amount: 1 };
         cart = [...cart, product];
 
         //DOM에 항목을 추가합니다.
         addToCartDOM(product);
+
+    //이미 해당 제품이 있는 경우에는
     } else {
-        //업데이트 값
+        //수량을 증가시킨다
         const amount = increaseAmount(id);
         const items = [...cartItemsDOM.querySelectorAll(".cart-item-amount")];
         const newAmount = items.find((value) => value.dataset.id === id);
@@ -38,6 +42,7 @@ export const addToCart = (id) => {
     openCart();
 };
 
+//현재 카트에 있는 항목들의 수량 총합을 계산하여 카트 아이콘 옆에 보여주는 역할
 function displayCartItemCount() {
     const amount = cart.reduce((total, cartItem) => {
         return (total += cartItem.amount);
@@ -46,6 +51,7 @@ function displayCartItemCount() {
     cartItemCountDOM.textContent = amount;
 }
 
+//현재 카트에 있는 항목들의 가격 총합을 계산하여 카트 페이지에서 보여준다
 function displayCartTotal() {
     let total = cart.reduce((total, cartItem) => {
         return (total += cartItem.price * cartItem.amount);
@@ -54,8 +60,10 @@ function displayCartTotal() {
     cartTotalDOM.textContent = `Total : ${formatPrice(total)}`;
 }
 
+
 function displayCartItemsDOM() {
     cart.forEach((cartItem) => {
+        //제품 객체를 받아서 카트 페이지의 HTML에 제품을 추가하는 역할을 한다
         addToCartDOM(cartItem);
     });
 }
