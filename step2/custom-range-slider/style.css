@@ -21,8 +21,13 @@ h2 {
     top: 10px;
 }
 
+.wrap {
+    margin: 50px 0;
+}
+
 .range-container {
     position: relative;
+    margin-top: 15%;
 }
 
 input[type="range"] {
