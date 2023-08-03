@@ -8,7 +8,7 @@ loveMe.addEventListener("click", (e) => {
     if (clickTime === 0) {
         clickTime = new Date().getTime(); //현재 시간을 clickTime 변수에 저장
     } else {
-        //현재 시간(new Date().getTime())과 이전 클릭 시간(clickTime)의 차이를 계산하여 800ms(밀리초)보다 작다면 더블클립으로 인식
+        //현재 시간(new Date().getTime())과 이전 클릭 시간(clickTime)의 차이를 계산하여 800ms(밀리초)보다 작다면 더블클릭으로 인식
         if (new Date().getTime() - clickTime < 800) {
             createHeart(e);
             clickTime = 0; //초기화
