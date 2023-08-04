@@ -1,11 +1,30 @@
-/* https://kutar37.tistory.com */
-window.onload = function () {
-    var target = $(".target");
+const swiper = new Swiper(".mySwiper", {
+    loop: true,
+    spaceBetween: 10,
+    slidesPerView: 4,
+    freeMode: true,
+    watchSlidesProgress: true,
+    // pagination: true
+});
+const swiper2 = new Swiper(".mySwiper2", {
+    loop: true,
+    spaceBetween: 10,
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    thumbs: {
+        swiper: swiper,
+    },
+});
+
+$(function () {
+    var target = $(".swiper-slide-active .target");
     var zoom = target.data("zoom");
 
-    $(".wrap")
+    $(".swiper-wrapper")
         .on("mousemove", magnify)
-        .prepend("<div class='magnifier'></div>")
+        // .prepend("<div class='magnifier'></div>")
         .children(".magnifier")
         .css({
             background: "url('" + target.attr("src") + "') no-repeat",
@@ -45,4 +64,4 @@ window.onload = function () {
             });
         }
     }
-};
+});

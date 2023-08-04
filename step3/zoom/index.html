@@ -3,25 +3,145 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
         <link rel="stylesheet" href="style.css" />
         <title>magnifier</title>
     </head>
     <body>
-        <h1>magnifier</h1>
+        <!-- <h1>magnifier</h1>
         <div class="wrap">
             <img class="target" src="https://i.imgur.com/zEZCgJC.jpg" data-zoom="3" />
-        </div>
-        <!-- <div class="wrap">
-            <img class="target" src="https://images.unsplash.com/photo-1508768787810-6adc1f613514?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e27f6661df21ed17ab5355b28af8df4e&auto=format&fit=crop&w=1350&q=80"  data-zoom="3" >
         </div> -->
-        <hr />
-        <h1>swiper</h1>
 
-        <script
-            src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-            crossorigin="anonymous"
-        ></script>
-        <script src="script.js"></script>
+        <!-- <hr /> -->
+
+        <h1></h1>
+        <div class="swiper__wrap">
+            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+                <div class="swiper-wrapper wrap">
+                    <!-- 돋보기 -->
+                    <div class="magnifier"></div>
+
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-1.jpg" class="target" data-zoom="3" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" class="target" data-zoom="3" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-3.jpg" class="target" data-zoom="3" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-4.jpg" class="target" data-zoom="3" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-5.jpg" class="target" data-zoom="3" />
+                    </div>
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <!-- 썸네일 -->
+            <div thumbsSlider="" class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+        <script>
+            $(function () {
+                let target;
+
+                function initializeMagnifier(thumbsIndex) {
+                    var zoom = target.data("zoom");
+                    var box = $(".wrap .swiper-slide");
+
+                    $(".wrap")
+                        .on("mousemove", magnify)
+                        .children(".magnifier")
+                        .css({
+                            background: "url('" + target.attr("src") + "') no-repeat",
+                            "background-size": target.width() * zoom + "px " + target.height() * zoom + "px",
+                        });
+
+                    var magnifier = $(".magnifier");
+
+                    function magnify(e) {
+                        var mouseX = e.pageX - $(this).offset().left;
+                        var mouseY = e.pageY - $(this).offset().top;
+
+                        if (mouseX < $(this).width() && mouseY < $(this).height() && mouseX > 0 && mouseY > 0) {
+                            magnifier.fadeIn(100);
+                        } else {
+                            magnifier.fadeOut(100);
+                        }
+
+                        if (magnifier.is(":visible")) {
+                            var rx = -(mouseX * zoom - magnifier.width() / 2);
+                            var ry = -(mouseY * zoom - magnifier.height() / 2);
+
+                            var px = mouseX - magnifier.width() / 2;
+                            var py = mouseY - magnifier.height() / 2;
+
+                            magnifier.css({
+                                left: px,
+                                top: py,
+                                backgroundPosition: rx + "px " + ry + "px",
+                            });
+                        }
+                    }
+                }
+
+                const swiper = new Swiper(".mySwiper", {
+                    spaceBetween: 10,
+                    slidesPerView: 4,
+                    freeMode: true,
+                    watchSlidesProgress: true,
+                });
+
+                const thumbsSwiper = new Swiper(".mySwiper2", {
+                    spaceBetween: 10,
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                    thumbs: {
+                        swiper: swiper,
+                    },
+                    on: {
+                        init: function () {
+                            target = $(".swiper-slide-active .target");
+                            initializeMagnifier();
+                        },
+                        slideChangeTransitionEnd: function () {
+                            const thumbsIndex = thumbsSwiper.activeIndex + 1;
+
+                            target = $(".swiper-slide-active .target");
+                            initializeMagnifier(thumbsIndex);
+
+                            console.log(thumbsIndex);
+                        },
+                    },
+                });
+            });
+        </script>
     </body>
 </html>
