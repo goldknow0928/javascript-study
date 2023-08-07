@@ -65,17 +65,20 @@
         </div>
 
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
         <script>
             $(function () {
                 let target;
+                let thumbsIndex = 0; // 초기 값 설정
 
                 function initializeMagnifier(thumbsIndex) {
                     var zoom = target.data("zoom");
-                    var box = $(".wrap .swiper-slide");
 
                     $(".wrap")
-                        .on("mousemove", magnify)
+                        .on("mousemove", function (e) {
+                            magnify(e, thumbsIndex); // thumbsIndex 값을 전달
+                        })
                         .children(".magnifier")
                         .css({
                             background: "url('" + target.attr("src") + "') no-repeat",
@@ -84,7 +87,7 @@
 
                     var magnifier = $(".magnifier");
 
-                    function magnify(e) {
+                    function magnify(e, thumbsIndex) {
                         var mouseX = e.pageX - $(this).offset().left;
                         var mouseY = e.pageY - $(this).offset().top;
 
@@ -98,7 +101,7 @@
                             var rx = -(mouseX * zoom - magnifier.width() / 2);
                             var ry = -(mouseY * zoom - magnifier.height() / 2);
 
-                            var px = mouseX - magnifier.width() / 2;
+                            var px = mouseX - magnifier.width() / 2 + target.width() * thumbsIndex;
                             var py = mouseY - magnifier.height() / 2;
 
                             magnifier.css({
@@ -106,6 +109,8 @@
                                 top: py,
                                 backgroundPosition: rx + "px " + ry + "px",
                             });
+
+                            console.log(px, thumbsIndex);
                         }
                     }
                 }
@@ -129,15 +134,13 @@
                     on: {
                         init: function () {
                             target = $(".swiper-slide-active .target");
-                            initializeMagnifier();
+                            initializeMagnifier(thumbsIndex);
                         },
                         slideChangeTransitionEnd: function () {
-                            const thumbsIndex = thumbsSwiper.activeIndex + 1;
+                            const thumbsIndex = thumbsSwiper.activeIndex;
 
                             target = $(".swiper-slide-active .target");
                             initializeMagnifier(thumbsIndex);
-
-                            console.log(thumbsIndex);
                         },
                     },
                 });
