@@ -4,46 +4,40 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+        <title>magnifyZoom</title>
         <link rel="stylesheet" href="style.css" />
-        <title>magnifier</title>
     </head>
     <body>
-        <!-- <h1>magnifier</h1>
-        <div class="wrap">
-            <img class="target" src="https://i.imgur.com/zEZCgJC.jpg" data-zoom="3" />
-        </div> -->
-
-        <!-- <hr /> -->
-
-        <h1></h1>
         <div class="swiper__wrap">
-            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
-                <div class="swiper-wrapper wrap">
-                    <!-- 돋보기 -->
-                    <div class="magnifier"></div>
-
+            <!-- 상단 이미지 -->
+            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2 container">
+                <div class="swiper-wrapper magnify-wrapper" id="zoom">
                     <div class="swiper-slide">
-                        <img src="https://swiperjs.com/demos/images/nature-1.jpg" class="target" data-zoom="3" />
+                        <img src="https://swiperjs.com/demos/images/nature-1.jpg" class="main-img" />
+                        <div class="large-img"></div>
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" class="target" data-zoom="3" />
+                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" class="main-img" />
+                        <div class="large-img"></div>
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://swiperjs.com/demos/images/nature-3.jpg" class="target" data-zoom="3" />
+                        <img src="https://swiperjs.com/demos/images/nature-3.jpg" class="main-img" />
+                        <div class="large-img"></div>
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://swiperjs.com/demos/images/nature-4.jpg" class="target" data-zoom="3" />
+                        <img src="https://swiperjs.com/demos/images/nature-4.jpg" class="main-img" />
+                        <div class="large-img"></div>
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://swiperjs.com/demos/images/nature-5.jpg" class="target" data-zoom="3" />
+                        <img src="https://swiperjs.com/demos/images/nature-5.jpg" class="main-img" />
+                        <div class="large-img"></div>
                     </div>
                 </div>
-
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-            <!-- 썸네일 -->
-            <div thumbsSlider="" class="swiper mySwiper">
+            <!-- 하단 썸네일 -->
+            <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
@@ -64,87 +58,82 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
         <script>
-            $(function () {
-                let target;
-                let thumbsIndex = 0; // 초기 값 설정
+            //이미지 돋보기
+            function magnifyZoom() {
+                document.getElementById("zoom").addEventListener(
+                    "mousemove",
+                    function (e) {
+                        const original = document.querySelector(".swiper-slide-active .main-img");
+                        const magnified = document.querySelector(".swiper-slide-active .large-img");
+                        const style = magnified.style;
+                        // main-img 요소의 위치와 크기 정보 가져오기
+                        const imgRect = original.getBoundingClientRect();
+                        // 마우스 이벤트의 페이지 좌표
+                        const mouseX = e.pageX;
+                        const mouseY = e.pageY;
+                        // main-img 요소의 window에서의 위치
+                        const imgX = imgRect.left + window.pageXOffset;
+                        const imgY = imgRect.top + window.pageYOffset;
+                        const x = mouseX - imgX;
+                        const y = mouseY - imgY;
+                        const imgWidth = original.width;
+                        const imgHeight = original.height;
+                        let xperc = (x / imgWidth) * 100;
+                        let yperc = (y / imgHeight) * 100;
 
-                function initializeMagnifier(thumbsIndex) {
-                    var zoom = target.data("zoom");
-
-                    $(".wrap")
-                        .on("mousemove", function (e) {
-                            magnify(e, thumbsIndex); // thumbsIndex 값을 전달
-                        })
-                        .children(".magnifier")
-                        .css({
-                            background: "url('" + target.attr("src") + "') no-repeat",
-                            "background-size": target.width() * zoom + "px " + target.height() * zoom + "px",
-                        });
-
-                    var magnifier = $(".magnifier");
-
-                    function magnify(e, thumbsIndex) {
-                        var mouseX = e.pageX - $(this).offset().left;
-                        var mouseY = e.pageY - $(this).offset().top;
-
-                        if (mouseX < $(this).width() && mouseY < $(this).height() && mouseX > 0 && mouseY > 0) {
-                            magnifier.fadeIn(100);
-                        } else {
-                            magnifier.fadeOut(100);
+                        //오른쪽 가장자리에 약간의 여백 추가
+                        if (x > 0.01 * imgWidth) {
+                            xperc += 0.15 * xperc;
                         }
 
-                        if (magnifier.is(":visible")) {
-                            var rx = -(mouseX * zoom - magnifier.width() / 2);
-                            var ry = -(mouseY * zoom - magnifier.height() / 2);
-
-                            var px = mouseX - magnifier.width() / 2 + target.width() * thumbsIndex;
-                            var py = mouseY - magnifier.height() / 2;
-
-                            magnifier.css({
-                                left: px,
-                                top: py,
-                                backgroundPosition: rx + "px " + ry + "px",
-                            });
-
-                            console.log(px, thumbsIndex);
+                        //아래쪽 가장자리에 약간의 여백 추가
+                        if (y >= 0.01 * imgHeight) {
+                            yperc += 0.15 * yperc;
                         }
-                    }
-                }
 
-                const swiper = new Swiper(".mySwiper", {
-                    spaceBetween: 10,
-                    slidesPerView: 4,
-                    freeMode: true,
-                    watchSlidesProgress: true,
-                });
+                        //확대된 이미지의 배경
+                        style.backgroundImage = `url(${original.src})`;
+                        //확대된 이미지의 배경을 가로로 설정
+                        style.backgroundPositionX = xperc - 9 + "%";
+                        //확대된 이미지의 배경을 세로로 설정
+                        style.backgroundPositionY = yperc - 9 + "%";
+                        //마우스 움직임으로 돋보기를 움직입니다.
+                        style.left = x - 75 + "px";
+                        style.top = y - 75 + "px";
+                    },
+                    false
+                );
+            }
 
-                const thumbsSwiper = new Swiper(".mySwiper2", {
-                    spaceBetween: 10,
-                    navigation: {
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-prev",
-                    },
-                    thumbs: {
-                        swiper: swiper,
-                    },
-                    on: {
-                        init: function () {
-                            target = $(".swiper-slide-active .target");
-                            initializeMagnifier(thumbsIndex);
-                        },
-                        slideChangeTransitionEnd: function () {
-                            const thumbsIndex = thumbsSwiper.activeIndex;
+            const swiper = new Swiper(".mySwiper", {
+                spaceBetween: 10,
+                slidesPerView: 4,
+                freeMode: true,
+                watchSlidesProgress: true,
+            });
 
-                            target = $(".swiper-slide-active .target");
-                            initializeMagnifier(thumbsIndex);
-                        },
+            const thumbsSwiper = new Swiper(".mySwiper2", {
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                    swiper: swiper,
+                },
+                on: {
+                    init: function () {
+                        magnifyZoom();
                     },
-                });
+                    slideChangeTransitionEnd: function () {
+                        magnifyZoom();
+                    },
+                },
             });
         </script>
     </body>
 </html>
+
+<!-- 참고 : https://daily-dev-tips.com/posts/vanilla-javascript-image-magnify/#vanilla-js-image-magnifier-to-zoom-on-hover -->
