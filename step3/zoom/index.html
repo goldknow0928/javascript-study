@@ -32,9 +32,14 @@
                         <img src="https://swiperjs.com/demos/images/nature-5.jpg" class="main-img" />
                         <div class="large-img"></div>
                     </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-6.jpg" class="main-img" />
+                        <div class="large-img"></div>
+                    </div>
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
             </div>
             <!-- 하단 썸네일 -->
             <div class="swiper mySwiper">
@@ -54,6 +59,9 @@
                     <div class="swiper-slide">
                         <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
                     </div>
+                    <div class="swiper-slide">
+                        <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,6 +70,11 @@
         <script>
             //이미지 돋보기
             function magnifyZoom() {
+
+                //스와이퍼 액티브일 때 
+                //large-img 태그 만들어서
+                //main-img 태그 다음에 넣기
+                
                 document.getElementById("zoom").addEventListener(
                     "mousemove",
                     function (e) {
@@ -99,7 +112,7 @@
                         style.backgroundPositionX = xperc - 9 + "%";
                         //확대된 이미지의 배경을 세로로 설정
                         style.backgroundPositionY = yperc - 9 + "%";
-                        //마우스 움직임으로 돋보기를 움직입니다.
+                        //마우스 움직임으로 돋보기를 무빙
                         style.left = x - 75 + "px";
                         style.top = y - 75 + "px";
                     },
@@ -109,7 +122,7 @@
 
             const swiper = new Swiper(".mySwiper", {
                 spaceBetween: 10,
-                slidesPerView: 4,
+                slidesPerView: 5,
                 freeMode: true,
                 watchSlidesProgress: true,
             });
@@ -119,6 +132,10 @@
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "fraction",
                 },
                 thumbs: {
                     swiper: swiper,
